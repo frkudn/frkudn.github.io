@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Furkan Uddin (frkudn) — Full Stack Developer, Flutter specialist, Open Source contributor & Privacy advocate."/>
+  <meta property="og:title" content="Furkan Uddin — Full Stack Developer & FOSS Builder"/>
+  <meta property="og:description" content="Open Source · Flutter · Privacy First · Linux · Building Better Alternatives"/>
+  <meta property="og:type" content="website"/>
+  <title>frkudn — Full Stack Developer</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦋</text></svg>"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ═══════════════════════════════
+       TOKENS
+    ═══════════════════════════════ */
+    :root {
+      --bg:       #04090d;
+      --bg1:      #070f15;
+      --bg2:      #0a141b;
+      --surface:  #0e1c26;
+      --surface2: #132330;
+      --border:   rgba(0,230,255,0.1);
+      --border2:  rgba(0,230,255,0.22);
+      --cyan:     #00e5ff;
+      --cyan-dim: #00b8cc;
+      --lime:     #a8ff3e;
+      --amber:    #ffb347;
+      --green:    #00ff88;
+      --t1: #ddeef7;
+      --t2: #7da8bc;
+      --t3: #3d6070;
+      --ff-mono: 'JetBrains Mono', monospace;
+      --ff-disp: 'Syne', sans-serif;
+      --ease: cubic-bezier(.16,1,.3,1);
+      --dur: 0.6s;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--ff-mono);
+      background: var(--bg);
+      color: var(--t2);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    ::selection { background: rgba(0,229,255,.18); color: var(--t1); }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--cyan-dim); }
+
+    /* ═══ CURSOR ═══ */
+    #cur, #cur2 {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+    }
+    #cur  { width:10px; height:10px; background:var(--cyan); transition:transform .12s; }
+    #cur2 { width:30px; height:30px; border:1px solid rgba(0,229,255,.35); transition:transform .2s, opacity .2s; }
+    .cur-hover #cur  { transform:translate(-50%,-50%) scale(2.5); background:transparent; border:1px solid var(--cyan); }
+    .cur-hover #cur2 { transform:translate(-50%,-50%) scale(0.5); opacity:0; }
+
+    /* ═══ GRID OVERLAY ═══ */
+    body::before {
+      content:''; position:fixed; inset:0;
+      background-image:
+        linear-gradient(rgba(0,229,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,.025) 1px, transparent 1px);
+      background-size:60px 60px;
+      z-index:0; pointer-events:none;
+    }
+    body::after {
+      content:''; position:fixed; inset:0;
+      background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,229,255,.04), transparent 70%);
+      z-index:0; pointer-events:none;
+    }
+
+    /* ═══ CANVAS ═══ */
+    #cvs {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      z-index:0; opacity:.45; pointer-events:none;
+    }
+
+    /* ═══════════════════════════════
+       NAV
+    ═══════════════════════════════ */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.9rem 3vw;
+      background:rgba(4,9,13,.92);
+      backdrop-filter:blur(24px);
+      border-bottom:1px solid var(--border);
+      transition:padding .3s;
+    }
+    nav.scrolled { padding:.65rem 3vw; }
+
+    .nav-logo {
+      font-family:var(--ff-disp); font-weight:800; font-size:1.15rem;
+      color:var(--t1); text-decoration:none; letter-spacing:-.01em;
+    }
+    .nav-logo em { color:var(--cyan); font-style:normal; }
+
+    .nav-mid {
+      display:flex; gap:.25rem;
+      background:var(--surface); border:1px solid var(--border); padding:.3rem;
+    }
+    .nav-mid a {
+      font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
+      color:var(--t3); text-decoration:none;
+      padding:.45rem .85rem; transition:color .2s, background .2s;
+    }
+    .nav-mid a:hover, .nav-mid a.active { color:var(--cyan); background:rgba(0,229,255,.06); }
+
+    .nav-right { display:flex; align-items:center; gap:.75rem; }
+    .nav-social { display:flex; gap:.5rem; }
+    .nav-social a {
+      display:flex; align-items:center; justify-content:center;
+      width:30px; height:30px; border:1px solid var(--border);
+      color:var(--t3); text-decoration:none; transition:all .2s;
+    }
+    .nav-social a:hover { border-color:var(--cyan); color:var(--cyan); }
+
+    .nav-toggle {
+      display:none; flex-direction:column; gap:5px;
+      background:none; border:none; cursor:none; padding:4px;
+    }
+    .nav-toggle span { display:block; width:22px; height:1.5px; background:var(--t1); transition:all .3s; }
+
+    /* ═══════════════════════════════
+       HERO
+    ═══════════════════════════════ */
+    #hero {
+      position:relative; z-index:2; min-height:100vh;
+      display:grid; grid-template-columns:1fr 1fr;
+      align-items:center; gap:4rem; padding:6rem 6vw 3rem;
+    }
+    .hero-left { display:flex; flex-direction:column; }
+
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:.6rem;
+      padding:.4rem .9rem;
+      border:1px solid rgba(0,255,136,.25); background:rgba(0,255,136,.04);
+      font-size:.6rem; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--green); width:fit-content; margin-bottom:1.8rem;
+      opacity:0; animation:fadeUp .6s .2s var(--ease) forwards;
+    }
+    .hero-badge::before {
+      content:''; width:6px; height:6px; border-radius:50%;
+      background:var(--green); animation:pulse-green 2s infinite;
+    }
+
+    .hero-name {
+      font-family:var(--ff-disp); font-weight:800;
+      font-size:clamp(3.2rem, 7.5vw, 6.5rem);
+      line-height:.92; color:var(--t1); letter-spacing:-.03em; margin-bottom:.6rem;
+      opacity:0; animation:fadeUp .7s .35s var(--ease) forwards;
+    }
+    .hero-name .c { color:var(--cyan); }
+
+    .hero-sub {
+      font-family:var(--ff-disp); font-size:clamp(1rem,2vw,1.3rem); font-weight:600;
+      color:var(--t3); margin-bottom:2.5rem;
+      opacity:0; animation:fadeUp .6s .5s var(--ease) forwards;
+    }
+    .hero-sub .hl { color:var(--amber); }
+
+    .hero-desc {
+      font-size:.8rem; line-height:1.9; color:var(--t2);
+      max-width:500px; margin-bottom:2.5rem;
+      opacity:0; animation:fadeUp .6s .65s var(--ease) forwards;
+    }
+    .hero-desc strong { color:var(--t1); font-weight:500; }
+
+    .hero-btns {
+      display:flex; gap:.75rem; flex-wrap:wrap;
+      opacity:0; animation:fadeUp .6s .8s var(--ease) forwards;
+    }
+
+    .btn {
+      display:inline-flex; align-items:center; gap:.55rem;
+      font-family:var(--ff-mono); font-size:.68rem;
+      letter-spacing:.1em; text-transform:uppercase;
+      text-decoration:none; padding:.75rem 1.6rem;
+      transition:all .25s; cursor:none; white-space:nowrap;
+    }
+    .btn svg { flex-shrink:0; }
+    .btn-fill { background:var(--cyan); color:var(--bg); font-weight:700; }
+    .btn-fill:hover { background:var(--cyan-dim); transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,229,255,.3); }
+    .btn-ghost { border:1px solid var(--border2); color:var(--t2); }
+    .btn-ghost:hover { border-color:var(--cyan); color:var(--cyan); transform:translateY(-2px); }
+
+    .hero-right { opacity:0; animation:fadeIn .8s .9s var(--ease) forwards; }
+
+    /* ═══ TERMINAL ═══ */
+    .terminal { background:var(--surface); border:1px solid var(--border); }
+    .terminal-bar {
+      display:flex; align-items:center; gap:.5rem;
+      padding:.7rem 1rem; border-bottom:1px solid var(--border); background:var(--bg2);
+    }
+    .dot { width:10px; height:10px; border-radius:50%; }
+    .dot.red   { background:#ff5f57; }
+    .dot.amber { background:#febc2e; }
+    .dot.green { background:#28c840; }
+    .terminal-title { font-size:.62rem; letter-spacing:.14em; color:var(--t3); margin-left:auto; }
+
+    .terminal-body { padding:1.4rem 1.6rem; font-size:.75rem; line-height:1.85; }
+    .tl { display:block; }
+    .tl + .tl { margin-top:.15rem; }
+    .tl .p  { color:var(--green); }
+    .tl .c  { color:var(--t1); }
+    .tl .k  { color:var(--cyan); }
+    .tl .s  { color:var(--amber); }
+    .tl .cm { color:var(--t3); font-style:italic; }
+    .tl .v  { color:var(--lime); }
+    .blink {
+      display:inline-block; width:7px; height:1em;
+      background:var(--cyan); vertical-align:middle;
+      animation:blink 1.1s step-end infinite;
+    }
+
+    .hero-pills {
+      display:flex; flex-wrap:wrap; gap:.5rem;
+      padding:1rem 1.6rem; border-top:1px solid var(--border);
+    }
+    .pill {
+      font-size:.58rem; letter-spacing:.1em; padding:.28rem .7rem;
+      border:1px solid var(--border); color:var(--t3);
+      text-transform:uppercase; transition:all .2s;
+    }
+    .pill:hover { border-color:var(--cyan); color:var(--cyan); }
+
+    .scroll-cue {
+      position:absolute; bottom:2.5rem; left:6vw;
+      display:flex; align-items:center; gap:.8rem;
+      font-size:.6rem; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--t3); z-index:2;
+      opacity:0; animation:fadeUp .6s 1.3s var(--ease) forwards;
+    }
+    .scroll-line {
+      width:50px; height:1px;
+      background:linear-gradient(to right, var(--cyan), transparent);
+      overflow:hidden; position:relative;
+    }
+    .scroll-line::after {
+      content:''; position:absolute; inset:0;
+      background:var(--cyan); animation:scanline 2s infinite;
+    }
+
+    /* ═══════════════════════════════
+       SECTION COMMON
+    ═══════════════════════════════ */
+    section { position:relative; z-index:2; }
+    .sw { max-width:1260px; margin:0 auto; padding:5.5rem 6vw; }
+
+    .sh { margin-bottom:3.5rem; }
+    .sh-tag {
+      display:flex; align-items:center; gap:.75rem;
+      font-size:.6rem; letter-spacing:.28em; text-transform:uppercase;
+      color:var(--cyan); margin-bottom:.75rem;
+    }
+    .sh-tag::before { content:''; display:block; width:28px; height:1px; background:var(--cyan); }
+    .sh-title {
+      font-family:var(--ff-disp); font-weight:800;
+      font-size:clamp(2rem,4.5vw,3.2rem);
+      color:var(--t1); line-height:1.05; letter-spacing:-.02em;
+    }
+    .sh-title .a { color:var(--amber); }
+    .sh-title .c { color:var(--cyan); }
+    .sh-title .l { color:var(--lime); }
+    .sh-title .g { color:var(--green); }
+
+    /* ─── REVEAL ───
+       Start hidden. JS adds .in when element enters viewport.
+       Using simple getBoundingClientRect on scroll — no IntersectionObserver tricks. */
+    .rv {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+    .rv.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ═══════════════════════════════
+       ABOUT
+    ═══════════════════════════════ */
+    #about { background:var(--bg1); }
+
+    .about-grid { display:grid; grid-template-columns:3fr 2fr; gap:4rem; align-items:start; }
+
+    .about-text p { font-size:.82rem; line-height:1.95; color:var(--t2); margin-bottom:1.1rem; }
+    .about-text p strong { color:var(--t1); font-weight:500; }
+    .about-text p .c { color:var(--cyan); }
+    .about-text p .a { color:var(--amber); }
+    .about-text p .l { color:var(--lime); }
+
+    .values { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.8rem; }
+    .vtag {
+      display:flex; align-items:center; gap:.5rem;
+      padding:.5rem 1rem; border:1px solid var(--border); background:var(--surface);
+      font-size:.66rem; letter-spacing:.06em; color:var(--t2); transition:all .22s;
+    }
+    .vtag:hover { border-color:var(--cyan); color:var(--cyan); background:rgba(0,229,255,.04); }
+
+    .about-stats { display:flex; flex-direction:column; gap:1rem; }
+    .stat-box {
+      padding:1.4rem; border:1px solid var(--border); background:var(--surface);
+      position:relative; overflow:hidden; transition:all .25s;
+    }
+    .stat-box::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; }
+    .stat-box.c::before { background:var(--cyan); }
+    .stat-box.a::before { background:var(--amber); }
+    .stat-box.l::before { background:var(--lime); }
+    .stat-box.g::before { background:var(--green); }
+    .stat-box:hover { transform:translateX(4px); border-color:rgba(0,229,255,.25); }
+    .stat-val { font-family:var(--ff-disp); font-size:1.8rem; font-weight:800; line-height:1; margin-bottom:.3rem; }
+    .stat-box.c .stat-val { color:var(--cyan); }
+    .stat-box.a .stat-val { color:var(--amber); }
+    .stat-box.l .stat-val { color:var(--lime); }
+    .stat-box.g .stat-val { color:var(--green); }
+    .stat-lbl { font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--t3); }
+
+    /* ═══════════════════════════════
+       SKILLS
+    ═══════════════════════════════ */
+    #skills { background:var(--bg); }
+
+    .skills-grid {
+      display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr));
+      gap:1px; background:var(--border); border:1px solid var(--border);
+    }
+
+    .sk-card {
+      background:var(--bg1); padding:2rem;
+      position:relative; overflow:hidden;
+      transition:background .3s; cursor:default;
+    }
+    .sk-card:hover { background:var(--surface); }
+    .sk-card::after {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,229,255,.06), transparent 55%);
+      opacity:0; transition:opacity .3s;
+    }
+    .sk-card:hover::after { opacity:1; }
+
+    .sk-icon { font-size:1.8rem; margin-bottom:1.1rem; }
+    .sk-name { font-family:var(--ff-disp); font-size:1.05rem; font-weight:700; color:var(--t1); margin-bottom:.4rem; }
+    .sk-desc { font-size:.72rem; color:var(--t3); line-height:1.75; margin-bottom:1.2rem; }
+
+    .sk-bar { height:1px; background:var(--border); margin-bottom:.9rem; overflow:hidden; }
+    .sk-fill { height:100%; transform:scaleX(0); transform-origin:left; transition:transform 1s var(--ease); }
+    .sk-card:hover .sk-fill { transform:scaleX(1); }
+    .sk-fill.c { background:var(--cyan); }
+    .sk-fill.a { background:var(--amber); }
+    .sk-fill.l { background:var(--lime); }
+    .sk-fill.g { background:var(--green); }
+
+    .sk-chips { display:flex; flex-wrap:wrap; gap:.35rem; }
+    .sk-chip { font-size:.58rem; letter-spacing:.08em; padding:.22rem .6rem; border:1px solid var(--border); color:var(--t3); }
+
+    .sk-card.primary { grid-column:span 2; display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+
+    /* ═══════════════════════════════
+       PROJECTS
+    ═══════════════════════════════ */
+    #projects { background:var(--bg2); }
+
+    .proj-featured {
+      display:grid; grid-template-columns:1.4fr 1fr;
+      gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:1px;
+    }
+
+    .proj-card {
+      background:var(--bg1); padding:2.2rem;
+      position:relative; overflow:hidden;
+      text-decoration:none; color:inherit; display:flex; flex-direction:column; transition:background .3s;
+    }
+    .proj-card:hover { background:var(--surface); }
+    .proj-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      transform:scaleX(0); transform-origin:left; transition:transform .4s var(--ease);
+    }
+    .proj-card:hover::before { transform:scaleX(1); }
+    .proj-card.c::before { background:var(--cyan); }
+    .proj-card.a::before { background:var(--amber); }
+
+    .proj-eyebrow {
+      display:flex; align-items:center; gap:.6rem;
+      font-size:.58rem; letter-spacing:.2em; text-transform:uppercase;
+      color:var(--t3); margin-bottom:1.1rem;
+    }
+    .proj-dot { width:6px; height:6px; border-radius:50%; }
+    .proj-dot.c { background:var(--cyan); }
+    .proj-dot.a { background:var(--amber); }
+    .proj-dot.l { background:var(--lime); }
+
+    .proj-badge {
+      margin-left:auto; font-size:.55rem; letter-spacing:.15em;
+      padding:.22rem .55rem; border:1px solid; text-transform:uppercase;
+    }
+    .proj-badge.c { border-color:var(--cyan); color:var(--cyan); }
+
+    .proj-title { font-family:var(--ff-disp); font-weight:800; font-size:1.7rem; color:var(--t1); margin-bottom:.7rem; line-height:1.05; }
+    .proj-desc { font-size:.76rem; color:var(--t3); line-height:1.85; margin-bottom:1.4rem; }
+
+    .proj-features { display:flex; flex-direction:column; gap:.5rem; margin-bottom:1.4rem; }
+    .proj-feat { display:flex; align-items:center; gap:.6rem; font-size:.7rem; color:var(--t2); }
+    .proj-feat::before { content:'▸'; color:var(--cyan); font-size:.6rem; }
+
+    .proj-stack { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1.4rem; }
+    .proj-tag { font-size:.6rem; letter-spacing:.08em; padding:.25rem .65rem; background:var(--surface); border:1px solid var(--border); color:var(--t3); }
+
+    .proj-links { display:flex; gap:1rem; align-items:center; }
+    .proj-link {
+      display:inline-flex; align-items:center; gap:.4rem;
+      font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+      text-decoration:none; transition:all .2s;
+    }
+    .proj-link.c { color:var(--cyan); }
+    .proj-link.a { color:var(--amber); }
+    .proj-link.l { color:var(--lime); }
+    .proj-link svg { transition:transform .2s; }
+    .proj-card:hover .proj-link svg { transform:translate(3px,-3px); }
+
+    .proj-download {
+      display:flex; flex-direction:column; gap:.5rem;
+      padding:1rem; background:var(--bg); border:1px solid var(--border); margin-top:1rem;
+    }
+    .dl-label { font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--t3); margin-bottom:.3rem; }
+    .dl-btn {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.5rem .75rem; border:1px solid var(--border);
+      background:var(--surface); text-decoration:none; font-size:.65rem; color:var(--t2); transition:all .2s;
+    }
+    .dl-btn:hover { border-color:var(--lime); color:var(--lime); }
+    .dl-size { color:var(--t3); font-size:.6rem; }
+
+    .proj-other {
+      display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+      gap:1px; background:var(--border); border:1px solid var(--border); border-top:none;
+    }
+    .proj-mini {
+      background:var(--bg1); padding:1.6rem;
+      text-decoration:none; color:inherit;
+      display:flex; flex-direction:column; gap:.75rem; transition:background .25s;
+    }
+    .proj-mini:hover { background:var(--surface); }
+    .proj-mini-title { font-family:var(--ff-disp); font-size:1.05rem; font-weight:700; color:var(--t1); }
+    .proj-mini-desc { font-size:.72rem; color:var(--t3); line-height:1.7; flex:1; }
+    .proj-mini-foot { display:flex; align-items:center; justify-content:space-between; margin-top:auto; }
+
+    #gh-strip {
+      display:flex; gap:1px; background:var(--border);
+      border:1px solid var(--border); border-top:none;
+    }
+    .gh-stat { flex:1; padding:1rem; background:var(--bg1); text-align:center; }
+    .gh-stat-val { font-family:var(--ff-disp); font-size:1.4rem; font-weight:800; color:var(--cyan); }
+    .gh-stat-lbl { font-size:.58rem; letter-spacing:.12em; text-transform:uppercase; color:var(--t3); margin-top:.2rem; }
+
+    /* ═══════════════════════════════
+       PHILOSOPHY
+    ═══════════════════════════════ */
+    #oss { background:var(--bg); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+
+    .oss-inner { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+
+    .oss-quote {
+      font-family:var(--ff-disp); font-size:clamp(1.6rem,3.5vw,2.6rem);
+      font-weight:800; color:var(--t1); line-height:1.15; letter-spacing:-.02em;
+    }
+    .oss-quote .hl  { color:var(--cyan); }
+    .oss-quote .hl2 { color:var(--lime); }
+
+    .oss-pillars {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:1px; background:var(--border); border:1px solid var(--border);
+    }
+    .oss-pillar { background:var(--bg1); padding:1.4rem; transition:background .25s; }
+    .oss-pillar:hover { background:var(--surface); }
+    .oss-pillar-icon { font-size:1.4rem; margin-bottom:.6rem; }
+    .oss-pillar-title { font-size:.78rem; font-weight:500; color:var(--t1); margin-bottom:.3rem; }
+    .oss-pillar-desc { font-size:.68rem; color:var(--t3); line-height:1.7; }
+
+    /* ═══════════════════════════════
+       CONTACT
+    ═══════════════════════════════ */
+    #contact { background:var(--bg1); }
+
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; }
+
+    .contact-head {
+      font-family:var(--ff-disp); font-size:clamp(1.8rem,3.5vw,2.8rem);
+      font-weight:800; color:var(--t1); letter-spacing:-.02em; line-height:1.1; margin-bottom:1.2rem;
+    }
+    .contact-head .a { color:var(--amber); }
+    .contact-text { font-size:.8rem; color:var(--t2); line-height:1.9; margin-bottom:2rem; }
+
+    .contact-channels { display:flex; flex-direction:column; gap:.6rem; }
+    .ch {
+      display:flex; align-items:center; gap:1rem;
+      padding:.95rem 1.1rem; border:1px solid var(--border); background:var(--surface);
+      text-decoration:none; color:var(--t2); font-size:.75rem;
+      transition:all .22s; position:relative; overflow:hidden;
+    }
+    .ch::after {
+      content:'↗'; position:absolute; right:1.1rem;
+      opacity:0; transform:translate(-6px,6px); transition:all .22s; color:var(--cyan); font-size:.8rem;
+    }
+    .ch:hover { border-color:var(--cyan); color:var(--t1); padding-right:2.4rem; }
+    .ch:hover::after { opacity:1; transform:translate(0,0); }
+    .ch-icon { font-size:1.1rem; flex-shrink:0; }
+    .ch-body { display:flex; flex-direction:column; gap:.1rem; }
+    .ch-handle { color:var(--t1); }
+    .ch-note { font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; color:var(--t3); }
+
+    .contact-right { display:flex; flex-direction:column; }
+    .contact-box { border:1px solid var(--border); background:var(--surface); padding:2.2rem; flex:1; }
+    .contact-box h3 { font-family:var(--ff-disp); font-size:1.3rem; font-weight:800; color:var(--t1); margin-bottom:.75rem; }
+    .contact-box p { font-size:.78rem; color:var(--t3); line-height:1.85; margin-bottom:1.8rem; }
+    .avail-row { display:flex; flex-direction:column; gap:.7rem; margin-bottom:2rem; }
+    .avail-item { display:flex; align-items:center; gap:.75rem; font-size:.7rem; color:var(--t2); }
+    .avail-item::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--green); flex-shrink:0; }
+
+    /* ═══════════════════════════════
+       FOOTER
+    ═══════════════════════════════ */
+    footer {
+      position:relative; z-index:2; border-top:1px solid var(--border);
+      padding:1.5rem 6vw; display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:1rem; background:var(--bg);
+    }
+    footer p { font-size:.62rem; letter-spacing:.1em; color:var(--t3); }
+    footer p .c { color:var(--cyan); }
+    .footer-links { display:flex; gap:1.2rem; }
+    .footer-links a { font-size:.62rem; letter-spacing:.1em; color:var(--t3); text-decoration:none; transition:color .2s; }
+    .footer-links a:hover { color:var(--cyan); }
+
+    /* ═══════════════════════════════
+       KEYFRAMES
+    ═══════════════════════════════ */
+    @keyframes fadeUp  { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+    @keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+    @keyframes blink   { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes pulse-green {
+      0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,.4)}
+      70%{box-shadow:0 0 0 7px rgba(0,255,136,0)}
+    }
+    @keyframes scanline { from{left:-100%} to{left:100%} }
+
+    /* ═══════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════ */
+    @media(max-width:1024px) {
+      #hero { grid-template-columns:1fr; gap:2.5rem; padding-top:5.5rem; }
+      .about-grid { grid-template-columns:1fr; gap:2.5rem; }
+      .oss-inner { grid-template-columns:1fr; gap:2.5rem; }
+      .contact-grid { grid-template-columns:1fr; gap:2.5rem; }
+    }
+    @media(max-width:768px) {
+      nav { padding:.8rem 4vw; }
+      .nav-mid { display:none; }
+      .nav-mid.open {
+        display:flex; flex-direction:column;
+        position:fixed; top:55px; left:0; right:0;
+        background:rgba(4,9,13,.97); backdrop-filter:blur(20px);
+        border-bottom:1px solid var(--border); padding:1.5rem 4vw; z-index:150;
+      }
+      .nav-toggle { display:flex; }
+      .sw { padding:3.5rem 4vw; }
+      .proj-featured { grid-template-columns:1fr; }
+      .oss-pillars { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:600px) {
+      .sk-card.primary { grid-column:span 1; grid-template-columns:1fr; }
+    }
+    @media(max-width:480px) {
+      .hero-name { font-size:2.8rem; }
+      .oss-pillars { grid-template-columns:1fr; }
+      .skills-grid { grid-template-columns:1fr; }
+      body { cursor:auto; }
+      #cur,#cur2 { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cur"></div>
+<div id="cur2"></div>
+
+<!-- PARTICLES -->
+<canvas id="cvs"></canvas>
+
+<!-- ═══════ NAV ═══════ -->
+<nav id="mainNav">
+  <a href="#hero" class="nav-logo">frk<em>udn</em></a>
+
+  <div class="nav-mid" id="navMid">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#oss">Philosophy</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <div class="nav-right">
+    <div class="nav-social">
+      <a href="https://github.com/frkudn" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+      <a href="https://x.com/frkudn" target="_blank" rel="noopener" aria-label="X Twitter">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.727-8.858L1.254 2.25H8.08l4.259 5.632L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+      </a>
+      <a href="https://linkedin.com/in/frkudn" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+    </div>
+    <button class="nav-toggle" id="toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section id="hero">
+  <div class="hero-left">
+    <span class="hero-badge">Always Exploring Something New</span>
+    <h1 class="hero-name"><span class="c">Furkan</span><br>Uddin</h1>
+    <p class="hero-sub">Full Stack Developer <span class="hl">&amp;</span> FOSS Builder</p>
+    <p class="hero-desc">
+      I code <strong>whenever I feel like it</strong> — no company, no org, no deadlines.
+      Flutter is my main weapon but far from my only one. I'm always <strong>exploring, mastering,
+      and adopting new skills</strong> while sharpening the old ones. I build
+      <strong>free, open alternatives</strong> to existing apps — better UX, real privacy, zero cost.
+      The future? I have <strong class="c">absolutely no idea</strong> — and honestly that's the fun part.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-fill">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        View Projects
+      </a>
+      <a href="https://frkudn.github.io/player" target="_blank" class="btn btn-ghost">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+        Player App
+      </a>
+      <a href="https://github.com/frkudn" target="_blank" class="btn btn-ghost">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot red"></span>
+        <span class="dot amber"></span>
+        <span class="dot green"></span>
+        <span class="terminal-title">frkudn@arch ~ zsh</span>
+      </div>
+      <div class="terminal-body">
+        <span class="tl"><span class="cm">// developer.dart — Furkan Uddin (frkudn)</span></span>
+        <span class="tl">&nbsp;</span>
+        <span class="tl"><span class="k">class</span> <span class="c">Developer</span> {</span>
+        <span class="tl">  <span class="k">final</span> name  = <span class="s">'Furkan Uddin'</span>;</span>
+        <span class="tl">  <span class="k">final</span> alias = <span class="s">'frkudn'</span>;</span>
+        <span class="tl">  <span class="k">final</span> os    = <span class="v">Linux</span>;</span>
+        <span class="tl">&nbsp;</span>
+        <span class="tl">  <span class="k">final</span> mainStack = [</span>
+        <span class="tl">    <span class="s">'Flutter'</span>, <span class="s">'Dart'</span>, <span class="s">'BLoC'</span>,</span>
+        <span class="tl">  ];</span>
+        <span class="tl">&nbsp;</span>
+        <span class="tl">  <span class="k">final</span> mission = {</span>
+        <span class="tl">    <span class="s">'coding'</span>    : <span class="s">'hobby, not a job'</span>,</span>
+        <span class="tl">    <span class="s">'schedule'</span>  : <span class="s">'whenever I feel like it'</span>,</span>
+        <span class="tl">    <span class="s">'builds'</span>    : <span class="s">'FOSS alternatives'</span>,</span>
+        <span class="tl">    <span class="s">'future'</span>    : <span class="s">'no idea yet 😄'</span>,</span>
+        <span class="tl">    <span class="s">'privacy'</span>   : <span class="v">true</span>,</span>
+        <span class="tl">    <span class="s">'openSource'</span>: <span class="v">true</span>,</span>
+        <span class="tl">    <span class="s">'degrees'</span>   : <span class="v">false</span>, <span class="cm">// skills &gt; certs</span></span>
+        <span class="tl">  };</span>
+        <span class="tl">}</span>
+        <span class="tl">&nbsp;</span>
+        <span class="tl"><span class="p">$</span> <span class="c">flutter run --release</span> <span class="blink"></span></span>
+      </div>
+      <div class="hero-pills">
+        <span class="pill">Flutter</span>
+        <span class="pill">Dart</span>
+        <span class="pill">BLoC</span>
+        <span class="pill">Linux</span>
+        <span class="pill">FOSS</span>
+        <span class="pill">Privacy</span>
+        <span class="pill">Open Source</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <div class="scroll-line"></div>
+    explore below
+  </div>
+</section>
+
+<!-- ═══════ ABOUT ═══════ -->
+<section id="about">
+  <div class="sw">
+    <div class="sh rv">
+      <div class="sh-tag">01 — About</div>
+      <h2 class="sh-title">Who is <span class="c">frkudn</span>?</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text rv">
+        <p>I'm <strong>Furkan Uddin</strong> — a self-taught developer who codes <span class="a">on his own terms</span>. No company, no boss, no sprint deadlines. Coding is a craft I picked up out of curiosity, kept out of passion, and still genuinely enjoy every time I sit down to build something.</p>
+        <p>My main weapon is <span class="c">Flutter</span>, but I refuse to be a one-stack dev. I'm constantly <span class="a">exploring, mastering, and adopting new skills</span> — whether that's jumping deeper into Linux internals, wiring up a backend API, or experimenting with a tool I only discovered yesterday. The stack grows when something interesting earns its place.</p>
+        <p>My mission is simple: build <strong>free, open-source alternatives</strong> to existing software that actually respect people. Better UX, real <strong>privacy</strong>, no tracking, no paywalls. If a good app shouldn't cost money or your data, I want to make the version that proves it.</p>
+        <p>Outside of code, I'm at the <span class="l">gym</span>, deep in a music rabbit hole, or watching something on Netflix until my brain resets. Probably <span class="a">introverted</span>. Definitely bad at small talk. Great at building things quietly and shipping them anyway.</p>
+        <p>The future? <strong>No roadmap.</strong> There are things I want to build that I haven't even imagined yet — and that's the part that actually keeps it exciting. <span class="l">2026 Furkan has zero plans and zero apologies for it.</span> 🦋</p>
+        <div class="values">
+          <div class="vtag">🐧 Linux Daily Driver</div>
+          <div class="vtag">🔓 Open Source Everything</div>
+          <div class="vtag">🔒 Privacy First</div>
+          <div class="vtag">🦋 Flutter Main Stack</div>
+          <div class="vtag">🏋️ Gym Enjoyer</div>
+          <div class="vtag">🎵 Music Always On</div>
+          <div class="vtag">📺 Netflix to Chill</div>
+          <div class="vtag">🧠 Skills &gt; Degrees</div>
+          <div class="vtag">🌱 Forever Exploring</div>
+          <div class="vtag">🤷 No Plan, No Problem</div>
+        </div>
+      </div>
+      <div class="about-stats rv">
+        <div class="stat-box c">
+          <div class="stat-val">🦋</div>
+          <div class="stat-lbl">Flutter — main stack, not the only one</div>
+        </div>
+        <div class="stat-box a">
+          <div class="stat-val">∞</div>
+          <div class="stat-lbl">Always learning, always exploring new skills</div>
+        </div>
+        <div class="stat-box l">
+          <div class="stat-val">🐧</div>
+          <div class="stat-lbl">Linux daily driver — owned, not rented</div>
+        </div>
+        <div class="stat-box g">
+          <div class="stat-val">?</div>
+          <div class="stat-lbl">Future plans: absolutely no idea yet 😄</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SKILLS ═══════ -->
+<section id="skills">
+  <div class="sw">
+    <div class="sh rv">
+      <div class="sh-tag">02 — Stack</div>
+      <h2 class="sh-title">What I <span class="a">build with.</span></h2>
+    </div>
+    <div class="skills-grid rv">
+      <!-- Flutter + BLoC primary wide card -->
+      <div class="sk-card primary">
+        <div>
+          <div class="sk-icon">🦋</div>
+          <div class="sk-name">Flutter & Dart</div>
+          <div class="sk-desc">My primary and deepest skill. One codebase that runs natively everywhere — Android, iOS, Web, Desktop, and Linux. I obsess over pixel-perfect UI, smooth 60fps animations, and ergonomic Dart code.</div>
+          <div class="sk-bar"><div class="sk-fill c"></div></div>
+          <div class="sk-chips">
+            <span class="sk-chip">Material 3</span>
+            <span class="sk-chip">Custom Paint</span>
+            <span class="sk-chip">Animations</span>
+            <span class="sk-chip">Platform Channels</span>
+            <span class="sk-chip">just_audio</span>
+            <span class="sk-chip">audio_service</span>
+            <span class="sk-chip">Dio</span>
+            <span class="sk-chip">Hive / Isar</span>
+            <span class="sk-chip">Get It</span>
+            <span class="sk-chip">Freezed</span>
+          </div>
+        </div>
+        <div>
+          <div class="sk-icon">🧱</div>
+          <div class="sk-name">My BLoC Architecture</div>
+          <div class="sk-desc">I didn't just adopt BLoC — I built my own pattern on top of it. Clean separation of events, states, and blocs. Fully testable, scalable codebases that stay readable no matter the size.</div>
+          <div class="sk-bar"><div class="sk-fill a"></div></div>
+          <div class="sk-chips">
+            <span class="sk-chip">flutter_bloc</span>
+            <span class="sk-chip">Cubit</span>
+            <span class="sk-chip">Streams</span>
+            <span class="sk-chip">Repository Pattern</span>
+            <span class="sk-chip">Dependency Injection</span>
+            <span class="sk-chip">Clean Architecture</span>
+          </div>
+        </div>
+      </div>
+      <!-- Full Stack -->
+      <div class="sk-card">
+        <div class="sk-icon">🌐</div>
+        <div class="sk-name">Full Stack Development</div>
+        <div class="sk-desc">Beyond Flutter — I build complete products. REST APIs, backend services, databases. End-to-end from UI to server, self-sufficient across the whole stack.</div>
+        <div class="sk-bar"><div class="sk-fill l"></div></div>
+        <div class="sk-chips">
+          <span class="sk-chip">REST APIs</span>
+          <span class="sk-chip">Node.js</span>
+          <span class="sk-chip">Fastify</span>
+          <span class="sk-chip">Databases</span>
+          <span class="sk-chip">Auth / JWT</span>
+          <span class="sk-chip">Docker</span>
+        </div>
+      </div>
+      <!-- Linux -->
+      <div class="sk-card">
+        <div class="sk-icon">🐧</div>
+        <div class="sk-name">Linux</div>
+        <div class="sk-desc">My daily driver — not because I have to, but because I love it. Terminal-native, bash scripting, systemd, package management. Linux is home turf. And I plan to build for it.</div>
+        <div class="sk-bar"><div class="sk-fill g"></div></div>
+        <div class="sk-chips">
+          <span class="sk-chip">Arch / Debian</span>
+          <span class="sk-chip">Bash</span>
+          <span class="sk-chip">Git CLI</span>
+          <span class="sk-chip">Docker</span>
+          <span class="sk-chip">SSH</span>
+          <span class="sk-chip">GTK / Qt</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ PROJECTS ═══════ -->
+<section id="projects">
+  <div class="sw">
+    <div class="sh rv">
+      <div class="sh-tag">03 — Projects</div>
+      <h2 class="sh-title">Things I've <span class="c">shipped.</span></h2>
+    </div>
+
+    <div class="proj-featured rv">
+      <!-- PLAYER -->
+      <div class="proj-card c">
+        <div class="proj-eyebrow">
+          <span class="proj-dot c"></span>
+          Flutter · Open Source · v1.2.0
+          <span class="proj-badge c">Featured</span>
+        </div>
+        <div class="proj-title">Player 🎵</div>
+        <div class="proj-desc">
+          The ultimate open-source media player — built with Flutter because no existing player felt right.
+          Local playback, zero tracking, 50+ format support. Your files stay on your device, always.
+          A real FOSS alternative to bloated, proprietary players.
+        </div>
+        <div class="proj-features">
+          <span class="proj-feat">50+ audio &amp; video format support</span>
+          <span class="proj-feat">10-Band EQ with bass boost &amp; effects</span>
+          <span class="proj-feat">Time-synced lyrics &amp; subtitle support</span>
+          <span class="proj-feat">Picture-in-Picture &amp; floating window</span>
+          <span class="proj-feat">Smart library with auto-scan &amp; playlists</span>
+          <span class="proj-feat">Zero tracking — absolute privacy</span>
+        </div>
+        <div class="proj-stack">
+          <span class="proj-tag">Flutter</span>
+          <span class="proj-tag">Dart</span>
+          <span class="proj-tag">BLoC</span>
+          <span class="proj-tag">just_audio</span>
+          <span class="proj-tag">audio_service</span>
+          <span class="proj-tag">Material 3</span>
+        </div>
+        <div class="proj-download">
+          <div class="dl-label">Download APK — v1.2.0</div>
+          <a href="https://github.com/frkudn/player/releases/download/v1.2.0/app-arm64-v8a-release.apk" class="dl-btn">
+            📱 ARM64 — Modern devices (2017+) <span class="dl-size">68.8 MB</span>
+          </a>
+          <a href="https://github.com/frkudn/player/releases/download/v1.2.0/app-armeabi-v7a-release.apk" class="dl-btn">
+            📲 ARM32 — Older devices <span class="dl-size">62.8 MB</span>
+          </a>
+        </div>
+        <div class="proj-links" style="margin-top:1.2rem;">
+          <a href="https://frkudn.github.io/player" target="_blank" class="proj-link c">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+            Official Site
+          </a>
+          <a href="https://github.com/frkudn/player" target="_blank" class="proj-link c">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            Source
+          </a>
+        </div>
+      </div>
+
+      <!-- LOFIII -->
+      <div class="proj-card a">
+        <div class="proj-eyebrow">
+          <span class="proj-dot a"></span>
+          Flutter · Open Source · In Development
+        </div>
+        <div class="proj-title">LOFIII 🎧</div>
+        <div class="proj-desc">
+          A chill Lo-Fi music streaming app built because the alternatives were either ugly, paid, or tracked you.
+          Stream, collect, and build your personal Lo-Fi library — beautifully, freely, privately.
+        </div>
+        <div class="proj-features">
+          <span class="proj-feat">Stream curated Lo-Fi library</span>
+          <span class="proj-feat">Create playlists, collect favorites</span>
+          <span class="proj-feat">Offline mode — download and listen</span>
+          <span class="proj-feat">Customizable themes &amp; layout</span>
+          <span class="proj-feat">Search by track, album, or artist</span>
+        </div>
+        <div class="proj-stack">
+          <span class="proj-tag">Flutter</span>
+          <span class="proj-tag">Dart</span>
+          <span class="proj-tag">BLoC</span>
+          <span class="proj-tag">Get It</span>
+          <span class="proj-tag">REST API</span>
+          <span class="proj-tag">Hive</span>
+        </div>
+        <div class="proj-links" style="margin-top:auto; padding-top:1.4rem;">
+          <a href="https://github.com/frkudn/lofiii" target="_blank" class="proj-link a">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-other rv">
+      <a href="https://github.com/frkudn" target="_blank" class="proj-mini">
+        <div class="proj-eyebrow"><span class="proj-dot l"></span> More repositories</div>
+        <div class="proj-mini-title">Explore GitHub →</div>
+        <div class="proj-mini-desc">All my open-source work, experiments, Flutter packages, and side projects. Everything MIT licensed, always free.</div>
+        <div class="proj-mini-foot">
+          <span class="proj-link l" style="font-size:.65rem;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            github.com/frkudn
+          </span>
+        </div>
+      </a>
+      <div class="proj-mini">
+        <div class="proj-eyebrow"><span class="proj-dot c"></span> Coming soon</div>
+        <div class="proj-mini-title">Linux Software 🐧</div>
+        <div class="proj-mini-desc">The Linux desktop needs more native apps. That's the next frontier — building tools the Linux community actually needs, done right and open source.</div>
+        <div class="proj-mini-foot">
+          <span style="font-size:.65rem; color:var(--t3); letter-spacing:.1em; text-transform:uppercase;">Future Focus</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="gh-strip" class="rv">
+      <div class="gh-stat">
+        <div class="gh-stat-val" id="gh-repos">—</div>
+        <div class="gh-stat-lbl">Public Repos</div>
+      </div>
+      <div class="gh-stat">
+        <div class="gh-stat-val" id="gh-followers">—</div>
+        <div class="gh-stat-lbl">Followers</div>
+      </div>
+      <div class="gh-stat">
+        <div class="gh-stat-val" id="gh-following">—</div>
+        <div class="gh-stat-lbl">Following</div>
+      </div>
+      <div class="gh-stat">
+        <div class="gh-stat-val" style="color:var(--lime);">MIT</div>
+        <div class="gh-stat-lbl">All Licenses</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ PHILOSOPHY ═══════ -->
+<section id="oss">
+  <div class="sw">
+    <div class="sh rv">
+      <div class="sh-tag">04 — Philosophy</div>
+      <h2 class="sh-title">Built in the <span class="l">open.</span></h2>
+    </div>
+    <div class="oss-inner">
+      <div class="oss-quote rv">
+        "If you can't read<br>the code, you can't<br>
+        <span class="hl">trust</span> the software.<br>
+        <span class="hl2">Open source</span> is<br>not a feature —<br>it's a principle."
+      </div>
+      <div class="oss-pillars rv">
+        <div class="oss-pillar">
+          <div class="oss-pillar-icon">🔓</div>
+          <div class="oss-pillar-title">Free & Open Source</div>
+          <div class="oss-pillar-desc">Everything I build is open by default. Fork it, audit it, improve it. MIT licensed. Always free.</div>
+        </div>
+        <div class="oss-pillar">
+          <div class="oss-pillar-icon">🔒</div>
+          <div class="oss-pillar-title">Privacy by Design</div>
+          <div class="oss-pillar-desc">Your data stays on your device. Zero tracking. ProtonMail. No compromise, ever.</div>
+        </div>
+        <div class="oss-pillar">
+          <div class="oss-pillar-icon">🔄</div>
+          <div class="oss-pillar-title">Better Alternatives</div>
+          <div class="oss-pillar-desc">If a paid or proprietary app exists, I want to build a free, open version that does it better — for everyone.</div>
+        </div>
+        <div class="oss-pillar">
+          <div class="oss-pillar-icon">🐧</div>
+          <div class="oss-pillar-title">Linux First</div>
+          <div class="oss-pillar-desc">Daily Linux user. The desktop needs more apps. I'm building them. Owning your machine is digital freedom.</div>
+        </div>
+        <div class="oss-pillar">
+          <div class="oss-pillar-icon">🧠</div>
+          <div class="oss-pillar-title">Skills &gt; Degrees</div>
+          <div class="oss-pillar-desc">Self-taught. CS is explored, not gatekept. What you build is your credential.</div>
+        </div>
+        <div class="oss-pillar">
+          <div class="oss-pillar-icon">🌐</div>
+          <div class="oss-pillar-title">Community</div>
+          <div class="oss-pillar-desc">Contributing back, filing issues, reviewing PRs, collaborating. Code is communal work.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CONTACT ═══════ -->
+<section id="contact">
+  <div class="sw">
+    <div class="sh rv">
+      <div class="sh-tag">05 — Contact</div>
+      <h2 class="sh-title">Let's <span class="a">connect.</span></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="rv">
+        <h3 class="contact-head">Say hi.<br>I <span class="a">might</span> reply fast.</h3>
+        <p class="contact-text">
+          Look, social stuff isn't my strongest skill — I'm probably a bit introverted.
+          But if you want to talk open source, Flutter architecture, Linux, privacy tools,
+          or just geek out about something cool — I'm actually into that.
+          No sales pitches. No recruiters. Just genuine conversation.
+        </p>
+        <div class="contact-channels">
+          <a href="mailto:frkudn@protonmail.com" class="ch">
+            <span class="ch-icon">📧</span>
+            <div class="ch-body">
+              <span class="ch-handle">frkudn@protonmail.com</span>
+              <span class="ch-note">Encrypted · ProtonMail · Preferred</span>
+            </div>
+          </a>
+          <a href="https://x.com/frkudn" target="_blank" rel="noopener" class="ch">
+            <span class="ch-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.727-8.858L1.254 2.25H8.08l4.259 5.632L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+            </span>
+            <div class="ch-body">
+              <span class="ch-handle">@frkudn</span>
+              <span class="ch-note">X / Twitter · DMs open</span>
+            </div>
+          </a>
+          <a href="https://linkedin.com/in/frkudn" target="_blank" rel="noopener" class="ch">
+            <span class="ch-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </span>
+            <div class="ch-body">
+              <span class="ch-handle">linkedin.com/in/frkudn</span>
+              <span class="ch-note">Professional · Open Source Collabs</span>
+            </div>
+          </a>
+          <a href="https://github.com/frkudn" target="_blank" rel="noopener" class="ch">
+            <span class="ch-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </span>
+            <div class="ch-body">
+              <span class="ch-handle">github.com/frkudn</span>
+              <span class="ch-note">Code · Issues · PRs · Contributions</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-right rv">
+        <div class="contact-box">
+          <h3>I Code When I Want To</h3>
+          <p>No company, no org, no schedule. I build things because I enjoy it — and I'm always picking up something new. If you have a cool open-source idea or just want to collab on something interesting, reach out.</p>
+          <div class="avail-row">
+            <div class="avail-item">Open source collabs &amp; contributions</div>
+            <div class="avail-item">Cool Flutter or Linux project ideas</div>
+            <div class="avail-item">Privacy-focused anything</div>
+            <div class="avail-item">Or just talk tech — that works too</div>
+          </div>
+          <a href="mailto:frkudn@protonmail.com" class="btn btn-fill" style="width:100%; justify-content:center;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            Send Email via ProtonMail
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <p>© 2026 <span class="c">Furkan Uddin</span> · frkudn · MIT Licensed · Built with 🦋 on 🐧</p>
+  <div class="footer-links">
+    <a href="https://github.com/frkudn" target="_blank">GitHub</a>
+    <a href="https://x.com/frkudn" target="_blank">Twitter/X</a>
+    <a href="https://linkedin.com/in/frkudn" target="_blank">LinkedIn</a>
+    <a href="mailto:frkudn@protonmail.com">Email</a>
+    <a href="https://frkudn.github.io/player" target="_blank">Player App</a>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════
+   CURSOR
+════════════════════════════════════ */
+const cur  = document.getElementById('cur');
+const cur2 = document.getElementById('cur2');
+
+document.addEventListener('mousemove', function(e) {
+  cur.style.left  = e.clientX + 'px';
+  cur.style.top   = e.clientY + 'px';
+  cur2.style.left = e.clientX + 'px';
+  cur2.style.top  = e.clientY + 'px';
+});
+
+document.querySelectorAll('a, button, .sk-card, .vtag, .pill, .oss-pillar').forEach(function(el) {
+  el.addEventListener('mouseenter', function() { document.body.classList.add('cur-hover'); });
+  el.addEventListener('mouseleave', function() { document.body.classList.remove('cur-hover'); });
+});
+
+/* ════════════════════════════════════
+   PARTICLES
+════════════════════════════════════ */
+var cvs = document.getElementById('cvs');
+var ctx = cvs.getContext('2d');
+var W, H, pts = [];
+
+function resize() {
+  W = cvs.width  = window.innerWidth;
+  H = cvs.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function Dot() { this.reset(); }
+Dot.prototype.reset = function() {
+  this.x  = Math.random() * W;
+  this.y  = Math.random() * H;
+  this.vx = (Math.random() - .5) * .25;
+  this.vy = (Math.random() - .5) * .25;
+  this.r  = Math.random() * .8 + .2;
+  this.a  = Math.random() * .4 + .08;
+  this.col = Math.random() > .75 ? '168,255,62' : '0,229,255';
+};
+Dot.prototype.step = function() {
+  this.x += this.vx; this.y += this.vy;
+  if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+};
+Dot.prototype.draw = function() {
+  ctx.beginPath();
+  ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(' + this.col + ',' + this.a + ')';
+  ctx.fill();
+};
+
+for (var i = 0; i < 90; i++) pts.push(new Dot());
+
+function frame() {
+  ctx.clearRect(0, 0, W, H);
+  for (var i = 0; i < pts.length; i++) { pts[i].step(); pts[i].draw(); }
+  for (var i = 0; i < pts.length; i++) {
+    for (var j = i + 1; j < pts.length; j++) {
+      var dx = pts[i].x - pts[j].x;
+      var dy = pts[i].y - pts[j].y;
+      var d  = Math.sqrt(dx*dx + dy*dy);
+      if (d < 110) {
+        ctx.beginPath();
+        ctx.moveTo(pts[i].x, pts[i].y);
+        ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.strokeStyle = 'rgba(0,229,255,' + ((1 - d/110) * .08) + ')';
+        ctx.lineWidth = .5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(frame);
+}
+frame();
+
+/* ════════════════════════════════════
+   NAV — smooth scroll for all links
+════════════════════════════════════ */
+var mainNav = document.getElementById('mainNav');
+var navMid  = document.getElementById('navMid');
+var toggle  = document.getElementById('toggle');
+
+function smoothScrollTo(id) {
+  var target = document.getElementById(id);
+  if (!target) return;
+  var navH = mainNav.offsetHeight;
+  var top  = target.getBoundingClientRect().top + window.pageYOffset - navH;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+}
+
+// Nav link clicks
+navMid.querySelectorAll('a').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    var id = this.getAttribute('href').replace('#', '');
+    smoothScrollTo(id);
+    // close mobile menu
+    navMid.classList.remove('open');
+    toggle.querySelectorAll('span').forEach(function(s) { s.style.transform = ''; s.style.opacity = '1'; });
+  });
+});
+
+// Hero button "View Projects" smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+  if (link.closest('.nav-mid')) return; // already handled above
+  link.addEventListener('click', function(e) {
+    var href = this.getAttribute('href');
+    if (href.length < 2) return;
+    var id = href.replace('#', '');
+    var target = document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    smoothScrollTo(id);
+  });
+});
+
+// Logo click → scroll to top
+document.querySelector('.nav-logo').addEventListener('click', function(e) {
+  e.preventDefault();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Shrink nav + active link on scroll
+window.addEventListener('scroll', function() {
+  mainNav.classList.toggle('scrolled', window.scrollY > 60);
+  var scrollMid = window.scrollY + mainNav.offsetHeight + 10;
+  document.querySelectorAll('section[id]').forEach(function(sec) {
+    var top = sec.offsetTop;
+    var bot = top + sec.offsetHeight;
+    var id  = sec.getAttribute('id');
+    var a   = navMid.querySelector('a[href="#' + id + '"]');
+    if (a) a.classList.toggle('active', scrollMid >= top && scrollMid < bot);
+  });
+}, { passive: true });
+
+/* ════════════════════════════════════
+   HAMBURGER
+════════════════════════════════════ */
+toggle.addEventListener('click', function() {
+  navMid.classList.toggle('open');
+  var spans = toggle.querySelectorAll('span');
+  var open  = navMid.classList.contains('open');
+  spans[0].style.transform = open ? 'translateY(6.5px) rotate(45deg)' : '';
+  spans[1].style.opacity   = open ? '0' : '1';
+  spans[2].style.transform = open ? 'translateY(-6.5px) rotate(-45deg)' : '';
+});
+
+/* ════════════════════════════════════
+   SCROLL REVEAL
+   Plain getBoundingClientRect on every
+   scroll — zero IntersectionObserver,
+   zero threshold tricks, guaranteed.
+════════════════════════════════════ */
+function revealCheck() {
+  var wh = window.innerHeight;
+  document.querySelectorAll('.rv').forEach(function(el) {
+    if (el.classList.contains('in')) return; // already revealed, skip
+    var rect = el.getBoundingClientRect();
+    if (rect.top < wh - 50) {
+      el.classList.add('in');
+    }
+  });
+}
+
+window.addEventListener('scroll', revealCheck, { passive: true });
+window.addEventListener('resize', revealCheck, { passive: true });
+
+// Run immediately and again after short delays to catch
+// elements visible on first load before any scroll happens
+revealCheck();
+setTimeout(revealCheck, 150);
+setTimeout(revealCheck, 600);
+
+/* ════════════════════════════════════
+   SKILL CARD — mouse glow position
+════════════════════════════════════ */
+document.querySelectorAll('.sk-card').forEach(function(card) {
+  card.addEventListener('mousemove', function(e) {
+    var r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX - r.left) / r.width  * 100) + '%');
+    card.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
+  });
+});
+
+/* ════════════════════════════════════
+   GITHUB — live stats
+════════════════════════════════════ */
+fetch('https://api.github.com/users/frkudn')
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var reposEl    = document.getElementById('gh-repos');
+    var followersEl = document.getElementById('gh-followers');
+    var followingEl = document.getElementById('gh-following');
+    if (reposEl    && data.public_repos  != null) reposEl.textContent    = data.public_repos;
+    if (followersEl && data.followers    != null) followersEl.textContent = data.followers;
+    if (followingEl && data.following    != null) followingEl.textContent = data.following;
+  })
+  .catch(function() {
+    /* silently fail — dashes remain */
+  });
+</script>
