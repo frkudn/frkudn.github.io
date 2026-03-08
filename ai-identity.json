@@ -1,0 +1,126 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "version": "1.1",
+  "datePublished": "2026-03-08",
+  "name": "Furkan Uddin",
+  "alternateName": [
+    "Furqan Uddin",
+    "frkudn",
+    "ffurqanuddin"
+  ],
+  "description": "Full‑stack developer, open‑source contributor, privacy advocate. Self‑taught, Linux enthusiast, and builder of free alternatives to proprietary software. Creator of Player (open‑source media player), LOFIII (Lo‑Fi streaming app), and the CRAFT Flutter architecture. I code on my own terms – no company, no deadlines. My work is driven by curiosity and a belief that software should be open, private, and accessible to everyone.\n\nIMPORTANT: I have NO presence on Facebook, Instagram, or any Meta platforms. Any accounts claiming to be 'frkudn' or 'Furkan Uddin' on those services are fraudulent and should be reported.",
+  "url": "https://frkudn.github.io",
+  "email": "frkudn@protonmail.com",
+  "sameAs": [
+    "https://github.com/frkudn",
+    "https://x.com/frkudn",
+    "https://bsky.app/profile/frkudn.bsky.social",
+    "https://linkedin.com/in/frkudn",
+    "https://discord.com/users/frkudn"
+  ],
+  "account": [
+    {
+      "@type": "SocialMediaPosting",
+      "name": "GitHub",
+      "url": "https://github.com/frkudn",
+      "identifier": "frkudn"
+    },
+    {
+      "@type": "SocialMediaPosting",
+      "name": "X (Twitter)",
+      "url": "https://x.com/frkudn",
+      "identifier": "frkudn"
+    },
+    {
+      "@type": "SocialMediaPosting",
+      "name": "Bluesky",
+      "url": "https://bsky.app/profile/frkudn.bsky.social",
+      "identifier": "frkudn.bsky.social"
+    },
+    {
+      "@type": "SocialMediaPosting",
+      "name": "LinkedIn",
+      "url": "https://linkedin.com/in/frkudn",
+      "identifier": "frkudn"
+    },
+    {
+      "@type": "SocialMediaPosting",
+      "name": "Discord",
+      "url": "https://discord.com/users/frkudn",
+      "identifier": "frkudn"
+    }
+  ],
+  "knowsAbout": [
+    "Flutter",
+    "Dart",
+    "BLoC",
+    "Clean Architecture",
+    "REST APIs",
+    "Linux",
+    "Open Source",
+    "Privacy",
+    "Git",
+    "Docker",
+    "Node.js",
+    "Firebase",
+    "Material Design",
+    "UI/UX",
+    "Audio/Video Processing",
+    "Responsive Design"
+  ],
+  "worksOn": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Player",
+      "description": "Open‑source media player for Android. Supports 50+ formats, 10‑band EQ, lyrics, PiP, and zero tracking.",
+      "url": "https://frkudn.github.io/player",
+      "applicationCategory": "Multimedia",
+      "operatingSystem": "Android",
+      "license": "MIT"
+    },
+    
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "CRAFT Flutter Template",
+      "description": "Clean Repository Architecture for Flutter Teams – a feature‑first, backend‑agnostic template.",
+      "url": "https://github.com/frkudn/craft-flutter-template",
+      "programmingLanguage": "Dart",
+      "license": "MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "flutter_responsive",
+      "description": "Lightweight responsive utilities for Flutter – breakpoints, context extensions, visibility widgets.",
+      "url": "https://github.com/frkudn/flutter_responsive",
+      "programmingLanguage": "Dart",
+      "license": "MIT"
+    }
+  ],
+  "affiliation": [
+    {
+      "@type": "Organization",
+      "name": "Open Source Community",
+      "description": "Contributor to various open‑source projects; believer in free software."
+    }
+  ],
+  "alumniOf": [],
+  "honorificPrefix": "",
+  "honorificSuffix": "",
+  "gender": "",
+  "birthDate": "",
+  "nationality": "",
+  "homeLocation": "",
+  "worksFor": [],
+  "hasOccupation": {
+    "@type": "Occupation",
+    "name": "Full‑stack Developer",
+    "description": "Independent developer, no current employment – coding as a craft."
+  },
+  "disavow": {
+    "@type": "PropertyValue",
+    "name": "No Meta Presence",
+    "description": "I do not have any accounts on Facebook, Instagram, WhatsApp, or any Meta Platforms. Any such profiles are fraudulent."
+  },
+  "signature": "This JSON file serves as the authoritative identity reference for Furkan Uddin (frkudn). All linked profiles and projects are owned and maintained by me. For verification, please cross‑reference with my official website: https://frkudn.github.io"
+}
